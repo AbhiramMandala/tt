@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IOCL Executive CBT 2026 - CSE Mock Test</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;color:#0f172a}
+#login{max-width:600px;margin:40px auto;background:#fff;border-radius:12px;padding:32px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+#login h1{font-size:20px;margin-bottom:4px}
+#login .sub{color:#64748b;font-size:13px;margin-bottom:20px}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0;font-size:13px}
+.info-grid .k{color:#64748b}.info-grid .v{font-weight:600}
+.instructions{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;font-size:12.5px;line-height:1.6;margin:14px 0;color:#334155}
+.instructions b{color:#0f172a}
+#btn-start{background:#2563eb;color:#fff;border:0;padding:12px 28px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:8px}
+#btn-start:hover{background:#1d4ed8}
+#exam{display:none}
+.topbar{background:#1e293b;color:#fff;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;font-size:13px;position:sticky;top:0;z-index:100}
+.topbar .timer{background:#0f172a;padding:6px 14px;border-radius:6px;font-family:Consolas,monospace;font-size:15px;font-weight:700;letter-spacing:1px}
+.topbar .timer.warn{background:#991b1b;animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.7}}
+.section-tabs{display:flex;gap:0;border-bottom:2px solid #e2e8f0;background:#fff;padding:0 20px}
+.section-tab{padding:12px 20px;font-size:13px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;color:#64748b;transition:all .15s}
+.section-tab.active{color:#2563eb;border-bottom-color:#2563eb}
+.section-tab.locked{color:#cbd5e1;cursor:not-allowed}
+.main{display:flex;gap:0;min-height:calc(100vh - 90px)}
+.q-panel{flex:1;padding:24px 28px;max-width:720px}
+.palette{width:280px;background:#fff;border-left:1px solid #e2e8f0;padding:16px;overflow-y:auto;max-height:calc(100vh - 90px);position:sticky;top:44px}
+.palette h3{font-size:13px;margin-bottom:10px;color:#64748b}
+.pal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:14px}
+.pal-btn{width:100%;aspect-ratio:1;border:1px solid #e2e8f0;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer;background:#fff;transition:all .1s}
+.pal-btn.current{box-shadow:inset 0 0 0 2px #2563eb}
+.pal-btn.answered{background:#2563eb;color:#fff;border-color:#2563eb}
+.pal-btn.review{background:#7c3aed;color:#fff;border-color:#7c3aed}
+.pal-btn.review-ans{background:#7c3aed;color:#fff;border-color:#7c3aed;position:relative}
+.pal-btn.review-ans::after{content:"✓";position:absolute;top:-2px;right:-2px;background:#16a34a;color:#fff;width:12px;height:12px;border-radius:50%;font-size:8px;display:flex;align-items:center;justify-content:center}
+.pal-btn.skipped{background:#fef2f2;border-color:#fca5a5;color:#dc2626}
+.legend{font-size:11px;color:#64748b;line-height:2}
+.legend span{display:inline-block;width:12px;height:12px;border-radius:2px;vertical-align:middle;margin-right:4px}
+.q-meta{font-size:12px;color:#64748b;margin-bottom:6px}
+.q-text{font-size:15px;line-height:1.6;margin-bottom:18px;font-weight:500}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:all .12s;font-size:14px}
+.opt:hover{border-color:#a5b4fc;background:#f8fafc}
+.opt.selected{border-color:#2563eb;background:#eff6ff}
+.opt .rb{width:18px;height:18px;border:2px solid #cbd5e1;border-radius:50%;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.opt.selected .rb{border-color:#2563eb;background:#2563eb}
+.opt.selected .rb::after{content:"";width:6px;height:6px;border-radius:50%;background:#fff}
+.actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.actions button{border:0;padding:10px 18px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer}
+.btn-save{background:#2563eb;color:#fff}
+.btn-clear{background:#e2e8f0;color:#334155}
+.btn-review{background:#7c3aed;color:#fff}
+.btn-clear:hover{background:#cbd5e1}
+.btn-submit{background:#dc2626;color:#fff;margin-left:auto}
+.btn-submit:hover{background:#b91c1c}
+#results{display:none;max-width:700px;margin:40px auto;background:#fff;border-radius:12px;padding:32px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+#results h2{margin-bottom:4px}
+#results .sub{color:#64748b;font-size:13px;margin-bottom:20px}
+.score-card{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
+.sc-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
+.sc-box .num{font-size:28px;font-weight:800;margin-bottom:2px}
+.sc-box .lbl{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px}
+.sc-box.green .num{color:#16a34a}.sc-box.red .num{color:#dc2626}.sc-box.blue .num{color:#2563eb}.sc-box.amber .num{color:#d97706}
+.sec-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px}
+.sec-table th{text-align:left;padding:8px 10px;background:#f1f5f9;border-bottom:2px solid #e2e8f0;font-weight:600}
+.sec-table td{padding:8px 10px;border-bottom:1px solid #e2e8f0}
+.cutoff-box{background:#fefce8;border:1px solid #fde68a;border-radius:8px;padding:14px;margin:16px 0;font-size:13px;line-height:1.7}
+.cutoff-box b{color:#92400e}
+.review-sec{margin-top:24px}
+.review-sec details summary{cursor:pointer;font-weight:600;margin-bottom:8px;font-size:14px}
+.rev-q{padding:10px;border-bottom:1px solid #e2e8f0;font-size:13px;line-height:1.6}
+.rev-q .q{font-weight:600;margin-bottom:4px}
+.rev-q .meta{color:#64748b;font-size:12px}
+.rev-q .correct{color:#16a34a;font-weight:600}
+.rev-q .wrong{color:#dc2626;font-weight:600}
+</style>
+</head>
+<body>
+<div id="login">
+<h1>IOCL Executive Recruitment 2026</h1>
+<div class="sub">Computer Based Test (CBT) Mock - Computer Science & IT</div>
+<div class="info-grid">
+<div><span class="k">Total Questions:</span></div><div class="v">100</div>
+<div><span class="k">Total Marks:</span></div><div class="v">100</div>
+<div><span class="k">Negative Marking:</span></div><div class="v">-0.25 per wrong answer</div>
+<div><span class="k">Section A Duration:</span></div><div class="v">60 minutes</div>
+<div><span class="k">Section B Duration:</span></div><div class="v">90 minutes</div>
+<div><span class="k">Total Duration:</span></div><div class="v">150 minutes</div>
+</div>
+<div class="instructions">
+<b>Exam Instructions:</b><br>
+1. Section A (General Aptitude) must be attempted <b>first</b>. Section B (Domain Knowledge) opens after Section A is submitted. <b>You cannot go back to Section A.</b><br>
+2. Each question carries <b>1 mark</b>. <b>0.25 marks</b> deducted for every wrong answer.<br>
+3. Section A: Quantitative Aptitude (20) + Logical Reasoning (15) + Verbal Ability (15) = 50 questions.<br>
+4. Section B: CS/IT Domain Knowledge = 50 questions.<br>
+5. Qualifying (General/EWS/OBC): 40% each section, 45% overall. (SC/ST: 35%/40%. PwBD: 25%/30%).
+</div>
+<button id="btn-start" onclick="startExam()">I am ready to begin</button>
+</div>
+
+<div id="exam">
+<div class="topbar">
+<div id="exam-info">IOCL CBT Mock | Section A - General Aptitude</div>
+<div class="timer" id="timer">60:00</div>
+</div>
+<div class="section-tabs">
+<div class="section-tab active" id="tabA" onclick="switchSection('A')">Section A: General Aptitude (50 Qs)</div>
+<div class="section-tab locked" id="tabB" onclick="switchSection('B')">Section B: Domain Knowledge (50 Qs)</div>
+</div>
+<div class="main">
+<div class="q-panel" id="q-panel"></div>
+<div class="palette">
+<h3>Question Palette</h3>
+<div class="pal-grid" id="pal-grid"></div>
+<div class="legend">
+<span style="background:#2563eb"></span> Answered<br>
+<span style="background:#fff;border:1px solid #e2e8f0"></span> Not Visited<br>
+<span style="background:#fef2f2;border:1px solid #fca5a5"></span> Not Answered (Visited)<br>
+<span style="background:#7c3aed"></span> Marked for Review<br>
+<span style="background:#7c3aed;position:relative"><span style="position:absolute;top:-4px;right:-4px;background:#16a34a;color:#fff;width:10px;height:10px;border-radius:50%;font-size:7px;display:inline-flex;align-items:center;justify-content:center">✓</span></span> Answered &amp; Review
+</div>
+</div>
+</div>
+</div>
+
+<div id="results"></div>
+
+<script>
+const Q=[
+// ===== SECTION A: QUANTITATIVE APTITUDE (20) =====
+{s:"QA",q:"A shopkeeper marks a product 40% above cost price and gives a 20% discount. What is his profit percentage?",o:["12%","20%","16%","10%"],a:0,e:"Marked price = 1.4C. Selling price = 1.4C × 0.8 = 1.12C. Profit = 12%."},
+{s:"QA",q:"If 5 workers can build a wall in 12 days, how many days will 8 workers take (same efficiency)?",o:["6.5 days","7.5 days","8 days","10 days"],a:1,e:"Work = 5×12 = 60 man-days. 60/8 = 7.5 days."},
+{s:"QA",q:"The ratio of ages of A and B is 3:5. After 8 years, the ratio becomes 5:7. What is B's current age?",o:["18 years","20 years","22 years","16 years"],a:1,e:"3x+8 / 5x+8 = 5/7 → 21x+56 = 25x+40 → 4x=16 → x=4. B = 5×4 = 20."},
+{s:"QA",q:"A train 150m long crosses a platform 250m long in 20 seconds. What is the speed of the train in km/h?",o:["54 km/h","60 km/h","72 km/h","48 km/h"],a:2,e:"Distance = 150+250 = 400m. Speed = 400/20 = 20 m/s = 72 km/h."},
+{s:"QA",q:"What is the compound interest on Rs. 8000 at 10% per annum for 2 years, compounded annually?",o:["Rs. 1600","Rs. 1680","Rs. 1640","Rs. 1800"],a:1,e:"A = 8000(1.1)² = 9680. CI = 9680 - 8000 = 1680."},
+{s:"QA",q:"The average of 11 results is 60. If the average of the first 6 is 58 and the last 6 is 63, what is the 6th result?",o:["59","61","66","63"],a:2,e:"Total = 660. First 6 = 348, last 6 = 378. 6th = 348+378-660 = 66."},
+{s:"QA",q:"A train moving at 90 km/h crosses a pole in 12 seconds. What is the length of the train?",o:["250 m","300 m","350 m","200 m"],a:1,e:"Speed = 90×(5/18) = 25 m/s. Length = 25 × 12 = 300 m."},
+{s:"QA",q:"A can do work in 20 days, B in 30 days. Together for 5 days, then A leaves. How many more days for B?",o:["15 days","17.5 days","20 days","12.5 days"],a:1,e:"Together rate = 1/12 per day. 5 days = 5/12 done. Remaining 7/12. B rate = 1/30. Days = (7/12)/(1/30) = 17.5."},
+{s:"QA",q:"The sum of the first 20 natural numbers is:",o:["190","210","200","215"],a:1,e:"Sum = n(n+1)/2 = 20×21/2 = 210."},
+{s:"QA",q:"Two pipes fill a tank in 10h and 15h. A third empties in 30h. All open together, time to fill?",o:["7.5 hours","8 hours","6 hours","10 hours"],a:0,e:"1/10+1/15-1/30 = 3/30+2/30-1/30 = 4/30 = 2/15. Time = 15/2 = 7.5 hours."},
+{s:"QA",q:"What comes next in the series: 2, 6, 12, 20, 30, ?",o:["40","42","36","44"],a:1,e:"Differences: 4,6,8,10,12. Next = 30+12 = 42. Also n(n+1): 1×2,2×3,3×4,4×5,5×6,6×7=42."},
+{s:"QA",q:"A boat goes 24 km upstream in 6 hours and 24 km downstream in 4 hours. What is the speed of the boat in still water?",o:["5 km/h","6 km/h","4 km/h","7 km/h"],a:0,e:"Up = 4 km/h, Down = 6 km/h. Still water = (4+6)/2 = 5 km/h."},
+{s:"QA",q:"The simple interest on a sum at 5% per annum for 3 years is Rs. 900. What is the principal?",o:["Rs. 5000","Rs. 6000","Rs. 4500","Rs. 7200"],a:1,e:"SI = PNR/100. 900 = P×3×5/100. P = 900×100/15 = 6000."},
+{s:"QA",q:"If the selling price is doubled, the profit triples. What is the profit percentage?",o:["100%","50%","200%","150%"],a:0,e:"Let CP = C, profit = x. SP = C+x. New SP = 2(C+x), new profit = 2C+2x-C = C+2x = 3x. C = x. Profit% = 100%."},
+{s:"QA",q:"What is the probability of getting at least one head when 3 coins are tossed?",o:["3/8","7/8","1/2","5/8"],a:1,e:"P(none) = 1/8. P(at least 1) = 1-1/8 = 7/8."},
+{s:"QA",q:"A circle has a circumference of 44 cm. What is its area? (Use π = 22/7)",o:["154 cm²","144 cm²","128 cm²","176 cm²"],a:0,e:"2πr = 44 → r = 7. Area = πr² = 22/7 × 49 = 154 cm²."},
+{s:"QA",q:"The HCF of 36 and 48 is:",o:["6","12","8","4"],a:1,e:"36 = 2²×3². 48 = 2⁴×3. HCF = 2²×3 = 12."},
+{s:"QA",q:"What is 20% of 30% of 500?",o:["30","60","45","20"],a:0,e:"500 × 0.30 = 150. 150 × 0.20 = 30."},
+{s:"QA",q:"A man walks at 5 km/h for 6 hours and 4 km/h for 4 hours. His average speed is:",o:["4.6 km/h","4.4 km/h","4.8 km/h","5.0 km/h"],a:0,e:"Total distance = 30+16 = 46. Time = 10h. Average = 46/10 = 4.6 km/h."},
+{s:"QA",q:"In how many ways can 5 books be arranged on a shelf?",o:["120","60","24","720"],a:0,e:"5! = 5×4×3×2×1 = 120."},
+
+// ===== SECTION A: LOGICAL REASONING (15) =====
+{s:"LR",q:"In a certain code, COMPUTER is written as RFUVQNPC. How is MEDICINE written in that code?",o:["EOJDJEFM","FOJDJEFN","FDJDJEFM","EDJDJEFN"],a:0,e:"Pattern: reverse and shift. M→E, E→O, D→J, I→D, C→J, I→E, N→F, E→M. MEDICINE → EOJDJEFM."},
+{s:"LR",q:"Pointing to a man, a woman says 'His mother is the only daughter of my mother.' How is the woman related to the man?",o:["Mother","Sister","Grandmother","Daughter"],a:0,e:"'Only daughter of my mother' = the woman herself. So 'His mother is me'. The woman is his mother."},
+{s:"LR",q:"In a certain code, APPLE is written as BQQMF. How is ORANGE written in that code?",o:["PSBOHF","PSBNGF","QRBOHF","PSBOHG"],a:0,e:"Each letter shifts +1: A→B, P→Q, P→Q, L→M, E→F. So O→P, R→S, A→B, N→O, G→H, E→F = PSBOHF."},
+{s:"LR",q:"If in a code language, MOUSE is coded as 73, then what is CHAIR coded as?",o:["40","39","43","35"],a:1,e:"Sum of letter positions: M+O+U+S+E = 13+15+21+19+5 = 73. C+H+A+I+R = 3+8+1+9+18 = 39."},
+{s:"LR",q:"In a certain code, FRIEND is coded as HUMJTK. How is CANDLE coded?",o:["EDRIRL","ECRNRL","EDRQRL","EDRJRL"],a:0,e:"Successive shifts: +2,+3,+4,+5,+6,+7. C→E, A→D, N→R, D→I, L→R, E→L = EDRIRL."},
+{s:"LR",q:"A man starts from point P, walks 10 km North, then turns right and walks 5 km, then turns right and walks 10 km. In which direction is he from P?",o:["North","South","East","West"],a:2,e:"N 10, E 5, S 10. Net: 5 km East of P."},
+{s:"LR",q:"In the series: 3, 9, 27, 81, ?, the next number is:",o:["162","216","243","324"],a:2,e:"Each term × 3. Next = 81×3 = 243."},
+{s:"LR",q:"Which number is the odd one out: 2, 5, 11, 17, 23, 29, 37?",o:["2","5","17","37"],a:0,e:"All are primes, but 2 is the only even prime. Alternatively, all others are of form 6k±1 except 2."},
+{s:"LR",q:"If '+' means '÷', '÷' means '-', '-' means '×' and '×' means '+', find: 12 + 6 ÷ 3 - 2 × 4",o:["0","2","4","6"],a:0,e:"Substitute: 12 ÷ 6 - 3 × 2 + 4. BODMAS: 12÷6=2, 3×2=6, so 2 - 6 + 4 = 0."},
+{s:"LR",q:"If '+' means '×', '×' means '-', '-' means '÷' and '÷' means '+', find: 8 + 4 - 2 ÷ 1",o:["17","21","24","19"],a:0,e:"Substitute: 8 × 4 ÷ 2 + 1. BODMAS: 8×4=32, 32÷2=16, 16+1 = 17."},
+{s:"LR",q:"If '+' means '×', '×' means '-', '-' means '÷' and '÷' means '+', then: 12 × 4 - 2 + 5 = ?",o:["2","9","12","15"],a:0,e:"Substitute: 12 - 4 ÷ 2 × 5. BODMAS: 4÷2=2, 2×5=10, so 12 - 10 = 2."},
+{s:"LR",q:"A is the father of B. B is the mother of C. C is the sister of D. How is A related to D?",o:["Father","Grandfather","Uncle","Brother"],a:1,e:"A → B (father), B → C (mother), C and D are siblings. So A is the father of C's mother = D's grandfather."},
+{s:"LR",q:"A is B's sister. C is B's mother. D is C's father. E is D's mother. How is A related to E?",o:["Great-granddaughter","Granddaughter","Daughter","Great-granddaughter or granddaughter"],a:0,e:"A's mother is C. C's father is D. D's mother is E. A is 3 generations below E = great-granddaughter."},
+{s:"LR",q:"Pick the odd one out: Piano, Guitar, Violin, Flute",o:["Piano","Guitar","Violin","Flute"],a:3,e:"Piano, Guitar, Violin are string instruments. Flute is a wind instrument."},
+{s:"LR",q:"If in a code, DELHI is coded as 73541 and CALCUTTA is coded as 82589662, how is CALICUT coded?",o:["8251896","8251859","8251589","8215896"],a:0,e:"D=7,E=3,L=5,H=4,I=1. C=8,A=2,L=5,U=9,T=6. CALICUT: C=8,A=2,L=5,I=1,C=8,U=9,T=6 → 8251896."},
+
+// ===== SECTION A: VERBAL ABILITY / ENGLISH (15) =====
+{s:"EN",q:"Choose the correctly spelled word:",o:["Accomodation","Accommodation","Acomodation","Acommodetion"],a:1,e:"Accommodation — double c and double m."},
+{s:"EN",q:"Choose the synonym of 'ABANDON':",o:["Keep","Retain","Forsake","Protect"],a:2,e:"Abandon = forsake, give up, desert."},
+{s:"EN",q:"Choose the antonym of 'BENEVOLENT':",o:["Kind","Generous","Malevolent","Charitable"],a:2,e:"Benevolent (kind) ↔ Malevolent (harmful)."},
+{s:"EN",q:"Identify the error: 'Each of the boys have completed their assignment.'",o:["Each of","boys have","completed their","No error"],a:1,e:"'Each' is singular → 'has completed' not 'have completed'."},
+{s:"EN",q:"Choose the correct form: 'He insisted ___ going alone.'",o:["on","for","to","in"],a:0,e:"'Insist on' is the correct preposition."},
+{s:"EN",q:"The idiom 'to burn the midnight oil' means:",o:["To waste resources","To work late into the night","To get angry","To be extravagant"],a:1,e:"Burn the midnight oil = work/study late at night."},
+{s:"EN",q:"Choose the correct sentence:",o:["None of the students has submitted","None of the students have submitted","None of the student have submitted","None of the students is submitted"],a:0,e:"'None' can take singular or plural; 'has submitted' is grammatically precise with 'each/none'. Both a and b can work; in formal grammar, singular is preferred."},
+{s:"EN",q:"A person who walks in sleep is called a:",o:["Somnambulist","Insomniac","Misanthropist","Egocentric"],a:0,e:"Somnambulist = sleepwalker. Insomniac = can't sleep."},
+{s:"EN",q:"Choose the word most similar in meaning to 'PRAGMATIC':",o:["Idealistic","Practical","Theoretical","Imaginative"],a:1,e:"Pragmatic = practical, realistic, matter-of-fact."},
+{s:"EN",q:"Fill in the blank: 'The committee ___ divided in its opinion.'",o:["were","is","has been","have"],a:1,e:"'Committee' is a collective noun acting as one unit → singular verb 'is'."},
+{s:"EN",q:"Choose the correct voice: 'The letter was written by him.' (Change to active)",o:["He wrote the letter","The letter wrote by him","He has written the letter","The letter is written by him"],a:0,e:"Passive 'was written by him' → Active: 'He wrote the letter'."},
+{s:"EN",q:"'PARADOX' means:",o:["A pair of documents","A self-contradicting statement","A parallel situation","A pair of twins"],a:1,e:"Paradox = a seemingly contradictory statement that may be true."},
+{s:"EN",q:"Choose the correct preposition: 'She is allergic ___ peanuts.'",o:["from","to","with","of"],a:1,e:"'Allergic to' is the correct collocation."},
+{s:"EN",q:"The passive voice of 'They are building a new bridge' is:",o:["A new bridge is being built by them","A new bridge has been built by them","A new bridge was built by them","A new bridge is built by them"],a:0,e:"Present continuous passive: is/are + being + past participle."},
+{s:"EN",q:"Choose the word that best completes: 'The scientist's ___ research earned her a Nobel Prize.'",o:["Pioneering","Trivial","Derivative","Conventional"],a:0,e:"Pioneering = innovative, groundbreaking — fits a Nobel-worthy context."},
+
+// ===== SECTION B: CS/IT DOMAIN KNOWLEDGE (50) =====
+// Data Structures & Algorithms (10)
+{s:"CS",q:"What is the time complexity of binary search on a sorted array of n elements?",o:["O(n)","O(log n)","O(n log n)","O(1)"],a:1,e:"Binary search halves the search space each step → O(log n)."},
+{s:"CS",q:"Which data structure is used in BFS traversal of a graph?",o:["Stack","Queue","Priority Queue","Heap"],a:1,e:"BFS uses a queue (FIFO) to explore nodes level by level."},
+{s:"CS",q:"What is the worst-case time complexity of quicksort?",o:["O(n log n)","O(n²)","O(n)","O(log n)"],a:1,e:"Quicksort worst case (already sorted, bad pivot) = O(n²)."},
+{s:"CS",q:"The height of a balanced BST with n nodes is:",o:["O(n)","O(log n)","O(n log n)","O(1)"],a:1,e:"AVL/Red-Black trees maintain height O(log n)."},
+{s:"CS",q:"Which sorting algorithm has the best average-case performance for nearly sorted data?",o:["Quicksort","Insertion Sort","Merge Sort","Selection Sort"],a:1,e:"Insertion sort is O(n) for nearly sorted data, best among these."},
+{s:"CS",q:"What is the space complexity of merge sort?",o:["O(1)","O(log n)","O(n)","O(n²)"],a:2,e:"Merge sort needs O(n) auxiliary space for the merge step."},
+{s:"CS",q:"In a hash table with chaining, what is the average-case time complexity for search?",o:["O(1)","O(log n)","O(n)","O(n log n)"],a:0,e:"With a good hash function, chaining gives O(1) average search."},
+{s:"CS",q:"Which traversal of a BST gives sorted order?",o:["Pre-order","In-order","Post-order","Level-order"],a:1,e:"In-order traversal of BST yields nodes in ascending sorted order."},
+{s:"CS",q:"What is the minimum number of nodes in a binary tree of height h (where height of single node = 0)?",o:["h+1","2h","2^h","2^(h+1)-1"],a:0,e:"Minimum = h+1 (a completely skewed/degenerate tree, one node per level)."},
+
+// Operating Systems (8)
+{s:"CS",q:"Which scheduling algorithm can cause starvation of shorter jobs?",o:["FCFS","Round Robin","Shortest Job First","All of these"],a:2,e:"SJF can starve longer jobs if shorter jobs keep arriving."},
+{s:"CS",q:"In the producer-consumer problem with a bounded buffer, which synchronization mechanism is needed?",o:["Only mutex","Only semaphore","Mutex and semaphore","Neither"],a:2,e:"Mutex for mutual exclusion on buffer, counting semaphore for empty/full slots."},
+{s:"CS",q:"What is a race condition?",o:["When two processes finish at the same time","When the output depends on the timing of uncontrollable events","When a process runs faster than others","When CPU switches between processes"],a:1,e:"Race condition: outcome depends on relative timing/ordering of execution."},
+{s:"CS",q:"Which page replacement algorithm suffers from Belady's anomaly?",o:["LRU","FIFO","Optimal","LFU"],a:1,e:"FIFO suffers Belady's anomaly: more frames can cause more page faults."},
+{s:"CS",q:"In demand paging, a page fault occurs when:",o:["A page is modified","A referenced page is not in memory","The page table is full","The TLB is cleared"],a:1,e:"Page fault: the referenced page is not loaded in physical memory."},
+{s:"CS",q:"What is the purpose of a TLB (Translation Lookaside Buffer)?",o:["Store page tables","Cache recent page table translations","Manage virtual memory","Handle interrupts"],a:1,e:"TLB caches recent virtual→physical address translations for speed."},
+{s:"CS",q:"Which of these is NOT a valid inter-process communication mechanism?",o:["Pipes","Message queues","Shared memory","Polling"],a:3,e:"Polling is a technique, not an IPC mechanism. Pipes, message queues, shared memory are IPC."},
+{s:"CS",q:"The critical section problem requires satisfying:",o:["Mutual exclusion, progress, bounded waiting","Mutual exclusion only","Deadlock freedom only","Starvation freedom only"],a:0,e:"All three: mutual exclusion, progress, and bounded waiting must be satisfied."},
+
+// DBMS (7)
+{s:"CS",q:"Which normal form eliminates transitive dependencies?",o:["1NF","2NF","3NF","BCNF"],a:2,e:"3NF removes transitive dependencies (non-key → non-key)."},
+{s:"CS",q:"What is the result of a FULL OUTER JOIN?",o:["Only matching rows from both tables","All rows from left + matching from right","All rows from both tables, with NULLs where no match","Only rows present in both tables"],a:2,e:"Full outer join returns all rows from both tables; NULLs fill unmatched positions."},
+{s:"CS",q:"ACID properties in databases stand for:",o:["Atomicity, Consistency, Isolation, Durability","Association, Consistency, Isolation, Duplication","Atomicity, Concurrency, Isolation, Durability","Atomicity, Consistency, Integration, Durability"],a:0,e:"ACID = Atomicity, Consistency, Isolation, Durability."},
+{s:"CS",q:"Which isolation level allows phantom reads?",o:["Read Uncommitted","Read Committed","Repeatable Read","Serializable"],a:2,e:"Phantom reads are possible at Read Uncommitted, Read Committed, and Repeatable Read levels. Serializable prevents them. The standard answer is Repeatable Read for textbook."},
+{s:"CS",q:"A foreign key constraint ensures:",o:["Uniqueness of values in a column","Referential integrity between two tables","No NULL values in a column","Primary key is indexed"],a:1,e:"Foreign key enforces referential integrity — values must match the referenced table."},
+{s:"CS",q:"SQL query: SELECT DISTINCT department, COUNT(*) FROM employees GROUP BY department HAVING COUNT(*) > 5. What does HAVING do?",o:["Filters individual rows","Filters grouped results","Sorts the output","Limits the number of rows"],a:1,e:"HAVING filters after GROUP BY; WHERE filters before grouping."},
+{s:"CS",q:"Which type of index is most efficient for range queries?",o:["Hash index","B+ tree index","Bitmap index","Clustered index"],a:1,e:"B+ tree supports efficient range queries due to sorted leaf-level linked list."},
+
+// Computer Networks (7)
+{s:"CS",q:"Which layer of the OSI model is responsible for end-to-end reliable delivery?",o:["Network Layer","Transport Layer","Session Layer","Data Link Layer"],a:1,e:"Transport layer (Layer 4) handles end-to-end reliability (TCP)."},
+{s:"CS",q:"What is the maximum segment size (MSS) in TCP?",o:["64 bytes","512 bytes","1460 bytes (typical)","65535 bytes"],a:2,e:"Typical MSS = 1500 (MTU) - 40 (TCP+IP headers) = 1460 bytes."},
+{s:"CS",q:"In CIDR notation, /24 means:",o:["24-bit subnet mask","24 hosts","24 subnets","24-bit network prefix"],a:0,e:"/24 = 255.255.255.0, a 24-bit subnet mask."},
+{s:"CS",q:"Which protocol is used for resolving IP addresses to MAC addresses?",o:["DNS","ARP","DHCP","RARP"],a:1,e:"ARP (Address Resolution Protocol) maps IP → MAC address."},
+{s:"CS",q:"What is the purpose of the three-way handshake in TCP?",o:["Encrypt data","Establish a connection","Allocate IP addresses","Resolve domain names"],a:1,e:"TCP 3-way handshake (SYN, SYN-ACK, ACK) establishes a reliable connection."},
+{s:"CS",q:"At which OSI layer does a switch operate?",o:["Layer 1","Layer 2","Layer 3","Layer 4"],a:1,e:"A standard switch operates at Layer 2 (Data Link) using MAC addresses."},
+{s:"CS",q:"Which port number is used by HTTPS by default?",o:["80","443","8080","22"],a:1,e:"HTTPS uses port 443. HTTP uses 80."},
+
+// OOP / Programming (6)
+{s:"CS",q:"Which OOP principle allows a class to have multiple methods with the same name but different parameters?",o:["Inheritance","Polymorphism","Encapsulation","Abstraction"],a:1,e:"Polymorphism (specifically method overloading) allows same-named methods with different signatures."},
+{s:"CS",q:"In Java, which keyword prevents a method from being overridden?",o:["static","final","abstract","private"],a:1,e:"final methods cannot be overridden in subclasses."},
+{s:"CS",q:"What is the output of: System.out.println(10 + 20 + \"hello\")?",o:["hello30","30hello","1020hello","Compilation error"],a:1,e:"10+20=30 (integer addition first), then 30+\"hello\"=\"30hello\"."},
+{s:"CS",q:"Which data structure is used to implement function call stack?",o:["Queue","Stack","Array","Linked List"],a:1,e:"A stack (LIFO) naturally models function call/return ordering."},
+{s:"CS",q:"In C, what does 'malloc' return if memory allocation fails?",o:["-1","0 (NULL)","Garbage value","Throws an exception"],a:1,e:"malloc returns NULL on failure in C."},
+{s:"CS",q:"What is the time complexity of accessing an element in an array by index?",o:["O(n)","O(log n)","O(1)","O(n log n)"],a:2,e:"Arrays provide O(1) random access via base address + index × size."},
+
+// Software Engineering (4)
+{s:"CS",q:"In the waterfall model, which phase comes immediately after requirements analysis?",o:["Testing","Design","Implementation","Deployment"],a:1,e:"Waterfall: Requirements → Design → Implementation → Testing → Deployment → Maintenance."},
+{s:"CS",q:"Which testing technique tests the internal structure/code without considering the output?",o:["Black-box testing","White-box testing","Regression testing","UAT"],a:1,e:"White-box testing examines internal logic/code paths."},
+{s:"CS",q:"Cyclomatic complexity measures:",o:["Code readability","Number of independent paths through code","Number of variables used","Compilation time"],a:1,e:"Cyclomatic complexity = number of linearly independent paths through program."},
+
+// Cybersecurity (4)
+{s:"CS",q:"Which attack involves intercepting communication between two parties?",o:["DDoS","Man-in-the-middle","SQL Injection","Brute Force"],a:1,e:"MITM attack: attacker secretly intercepts and possibly alters communication."},
+{s:"CS",q:"What does the CIA triad stand for in information security?",o:["Confidentiality, Integrity, Availability","Control, Integrity, Access","Confidentiality, Identification, Authentication","Control, Isolation, Authorization"],a:0,e:"CIA = Confidentiality, Integrity, Availability — the core security principles."},
+{s:"CS",q:"A firewall primarily operates at which OSI layer(s)?",o:["Layer 1 only","Layer 3 and Layer 4","Layer 7 only","Layer 2 only"],a:1,e:"Packet-filtering firewalls work at Layers 3-4 (Network/Transport)."},
+{s:"CS",q:"Which encryption standard uses a 128-bit block size and 128/192/256-bit keys?",o:["DES","3DES","AES","RSA"],a:2,e:"AES uses 128-bit blocks with 128/192/256-bit keys."},
+
+// Web Technologies (3)
+{s:"CS",q:"Which HTTP method is used to update an existing resource?",o:["GET","POST","PUT","DELETE"],a:2,e:"PUT updates/replaces a resource. POST creates. DELETE removes."},
+{s:"CS",q:"What does CORS stand for?",o:["Cross-Origin Resource Sharing","Central Origin Request Service","Cross-OS Resource Synchronization","Client-Origin Response System"],a:0,e:"CORS = Cross-Origin Resource Sharing, controls cross-domain requests."},
+
+// AI/ML Basics (3)
+{s:"CS",q:"In supervised learning, the training data consists of:",o:["Only input features","Input features and labeled outputs","Only output labels","Unlabeled data"],a:1,e:"Supervised learning uses labeled pairs (input, expected output) for training."},
+{s:"CS",q:"Which algorithm is commonly used for classification tasks?",o:["K-Means","Linear Regression","Random Forest","PCA"],a:2,e:"Random Forest is a classification algorithm. K-Means is clustering, Linear Regression is regression, PCA is dimensionality reduction."},
+{s:"CS",q:"Overfitting in machine learning means:",o:["Model performs well on test data","Model learns noise in training data and performs poorly on new data","Model is too simple","Model cannot learn patterns"],a:1,e:"Overfitting: model memorizes training data including noise, fails to generalize."},
+
+// Discrete Math / Theory (2)
+{s:"CS",q:"In graph theory, a tree with n vertices has how many edges?",o:["n","n-1","n+1","2n-1"],a:1,e:"A tree with n vertices always has exactly n-1 edges."}
+];
+
+let currentSection='A', currentQ=0, answers=new Array(100).fill(null), review=new Array(100).fill(false), visited=new Array(100).fill(false);
+let sectionATimer=3600, sectionBTimer=5400, timerInterval=null, sectionASubmitted=false;
+const secA=Q.filter(q=>q.s!=='CS').length;
+const secB=Q.length-secA;
+
+function startExam(){document.getElementById('login').style.display='none';document.getElementById('exam').style.display='block';renderPalette();renderQuestion();startTimer();}
+
+function startTimer(){timerInterval=setInterval(()=>{let rem=currentSection==='A'?sectionATimer:sectionBTimer;if(rem<=0){submitSection();return}rem--;if(currentSection==='A')sectionATimer=rem;else sectionBTimer=rem;let m=Math.floor(rem/60),s=rem%60;let el=document.getElementById('timer');el.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');if(rem<300)el.classList.add('warn');else el.classList.remove('warn')},1000);}
+
+function renderQuestion(){let q=Q[currentQ];let num=currentSection==='A'?currentQ+1:currentQ-secA+1;let panel=document.getElementById('q-panel');let opts='';q.o.forEach((o,i)=>{let sel=answers[currentQ]===i?'selected':'';opts+=`<div class="opt ${sel}" onclick="selectAnswer(${i})"><div class="rb"></div><div>${String.fromCharCode(65+i)}. ${o}</div></div>`});panel.innerHTML=`<div class="q-meta">Question ${num} of ${currentSection==='A'?secA:secB} | ${currentSection==='A'?'Section A: General Aptitude':'Section B: CS/IT Domain Knowledge'} | +1 / -0.25</div><div class="q-text">${q.q}</div>${opts}<div class="actions"><button class="btn-save" onclick="saveNext()">Save & Next</button><button class="btn-clear" onclick="clearResponse()">Clear Response</button><button class="btn-review" onclick="markReview()">Mark for Review & Next</button>${currentSection==='A'?'<button class="btn-submit" onclick="confirmSubmitA()">Submit Section A</button>':'<button class="btn-submit" onclick="confirmSubmitB()">Submit Exam</button>'}</div>`;document.getElementById('exam-info').textContent=currentSection==='A'?'IOCL CBT Mock | Section A - General Aptitude':'IOCL CBT Mock | Section B - CS/IT Domain Knowledge';}
+
+function selectAnswer(i){answers[currentQ]=i;renderQuestion();renderPalette()}
+function clearResponse(){answers[currentQ]=null;renderQuestion();renderPalette()}
+function markReview(){review[currentQ]=true;nextQ()}
+function saveNext(){review[currentQ]=review[currentQ]&&answers[currentQ]!==null;nextQ()}
+function nextQ(){let start=currentSection==='A'?0:secA;let end=currentSection==='A'?secA:Q.length;if(currentQ+1<end){currentQ++}else{currentQ=start}visited[currentQ]=true;renderQuestion();renderPalette()}
+
+function confirmSubmitA(){let answered=0;for(let i=0;i<secA;i++)if(answers[i]!==null)answered++;if(!confirm(`Section A: You have answered ${answered} of ${secA} questions. Submit Section A and proceed to Section B? You CANNOT return to Section A.`))return;submitSection()}
+function confirmSubmitB(){let answered=0;for(let i=secA;i<Q.length;i++)if(answers[i]!==null)answered++;if(!confirm(`Submit exam? You have answered ${answered} of ${secB} questions in Section B.`))return;submitSection()}
+
+function submitSection(){if(currentSection==='A'){sectionASubmitted=true;currentSection='B';currentQ=secA;document.getElementById('tabA').classList.remove('active');document.getElementById('tabA').classList.add('locked');document.getElementById('tabB').classList.remove('locked');document.getElementById('tabB').classList.add('active');document.getElementById('timer').classList.remove('warn');renderPalette();renderQuestion()}else{showResults()}}
+
+function showResults(){clearInterval(timerInterval);document.getElementById('exam').style.display='none';let r=document.getElementById('results');r.style.display='block';
+let correct=0,wrong=0,unanswered=0,marks=0;let secAc=0,secAw=0,secBc=0,secBw=0;
+Q.forEach((q,i)=>{if(answers[i]===null){unanswered++}else if(answers[i]===q.a){correct++;marks++;if(i<secA)secAc++;else secBc++}else{wrong++;marks-=0.25;if(i<secA)secAw++;else secBw++}});
+let secAMarks=secAc-secAw*0.25;let secBMarks=secBc-secBw*0.25;let secAPct=(secAMarks/50*100).toFixed(1);let secBPct=(secBMarks/50*100).toFixed(1);let totalPct=(marks/100*100).toFixed(1);
+let genPass=secAPct>=40&&secBPct>=40&&totalPct>=45;let scPass=secAPct>=35&&secBPct>=35&&totalPct>=40;
+r.innerHTML=`<h2>IOCL CBT Mock — Results</h2><div class="sub">Computer Science & IT | Executive Recruitment 2026</div>
+<div class="score-card"><div class="sc-box green"><div class="num">${correct}</div><div class="lbl">Correct</div></div><div class="sc-box red"><div class="num">${wrong}</div><div class="lbl">Wrong</div></div><div class="sc-box blue"><div class="num">${marks.toFixed(2)}</div><div class="lbl">Total Marks</div></div><div class="sc-box amber"><div class="num">${totalPct}%</div><div class="lbl">Score %</div></div></div>
+<table class="sec-table"><tr><th>Section</th><th>Correct</th><th>Wrong</th><th>Marks</th><th>%</th></tr>
+<tr><td>A: General Aptitude (50)</td><td>${secAc}</td><td>${secAw}</td><td>${secAMarks.toFixed(2)}</td><td>${secAPct}%</td></tr>
+<tr><td>B: CS/IT Domain (50)</td><td>${secBc}</td><td>${secBw}</td><td>${secBMarks.toFixed(2)}</td><td>${secBPct}%</td></tr></table>
+<div class="cutoff-box"><b>Qualifying Criteria (IOCL 2026):</b><br>
+General/EWS/OBC: 40% each section + 45% overall = ${genPass?'<span style="color:#16a34a">✓ QUALIFIED (General)</span>':'<span style="color:#dc2626">✗ NOT QUALIFIED (General)</span>'}<br>
+SC/ST: 35% each section + 40% overall = ${scPass?'<span style="color:#16a34a">✓ QUALIFIED (SC/ST)</span>':'<span style="color:#dc2626">✗ NOT QUALIFIED (SC/ST)</span>'}<br>
+PwBD: 25% each section + 30% overall = ${(secAPct>=25&&secBPct>=25&&totalPct>=30)?'<span style="color:#16a34a">✓ QUALIFIED (PwBD)</span>':'<span style="color:#dc2626">✗ NOT QUALIFIED (PwBD)</span>'}</div>
+<div class="review-sec"><details><summary>Review All Answers (${Q.length} questions)</summary></details></div>`;
+let det=r.querySelector('details');Q.forEach((q,i)=>{let s=i<secA?'A':'B';let your=answers[i]===null?'<i>Unanswered</i>':String.fromCharCode(65+answers[i]);let isCorrect=answers[i]===q.a;let cls=answers[i]===null?'':isCorrect?'correct':'wrong';let div=document.createElement('div');div.className='rev-q';div.innerHTML=`<div class="q"><span style="color:#64748b">[${s}]</span> Q${i+1}. ${q.q}</div><div>Your answer: <span class="${cls}">${your}</span> | Correct: <span class="correct">${String.fromCharCode(65+q.a)}. ${q.o[q.a]}</span></div><div class="meta">${q.e}</div>`;det.appendChild(div)});
+}
+
+function renderPalette(){let g=document.getElementById('pal-grid');g.innerHTML='';let start=currentSection==='A'?0:secA;let end=currentSection==='A'?secA:Q.length;for(let i=start;i<end;i++){let b=document.createElement('button');b.className='pal-btn';if(i===currentQ)b.classList.add('current');if(answers[i]!==null&&review[i])b.classList.add('review-ans');else if(review[i])b.classList.add('review');else if(answers[i]!==null)b.classList.add('answered');else if(visited[i])b.classList.add('skipped');b.textContent=i-start+1;b.onclick=()=>{currentQ=i;visited[i]=true;renderQuestion();renderPalette()};g.appendChild(b)}}
+</script>
+</body>
+</html>
