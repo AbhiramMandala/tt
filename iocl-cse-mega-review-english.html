@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IOCL CSE 2026 — Mega Practice Review (All Subjects, English)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;color:#0f172a}
+.wrap{max-width:900px;margin:24px auto;padding:0 16px}
+.card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:14px}
+h1{font-size:19px;margin-bottom:4px}
+.sub{color:#64748b;font-size:13px;margin-bottom:6px}
+.notice{background:#fefce8;border:1px solid #fde68a;border-radius:8px;padding:12px;font-size:12.5px;line-height:1.6;color:#713f12;margin:12px 0}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0;position:sticky;top:0;background:#f1f5f9;padding:8px 0;z-index:10}
+.toolbar input,.toolbar select{border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;font-size:13px;background:#fff}
+.btn{border:0;border-radius:8px;padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;background:#e2e8f0}
+.btn.primary{background:#2563eb;color:#fff}
+.btn.green{background:#16a34a;color:#fff}
+.btn.small{padding:5px 10px;font-size:12px;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+h2.sec{font-size:15px;margin:20px 0 6px;color:#1d4ed8}
+.q{border:1px solid #e2e8f0;border-radius:10px;padding:14px;margin:10px 0;background:#fff}
+.q .meta{font-size:11px;color:#64748b;margin-bottom:4px}
+.q .qt{font-size:14px;font-weight:600;line-height:1.55;margin-bottom:8px}
+.q .opts{font-size:13px;line-height:1.8;color:#1f2937}
+.q .sol{margin-top:8px;font-size:13px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:8px 10px;display:none}
+.q .sol.open{display:block}
+.q .sol .steps{color:#334155;font-size:12.5px;margin-top:4px;line-height:1.7;white-space:pre-line}
+@media print{.toolbar,.notice .noprint{display:none}.wrap{max-width:none}.q .sol{display:block!important}.card,.q{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+<h1>IOCL CSE 2026 — Mega Practice Review (English)</h1>
+<div class="sub" id="count"></div>
+<div class="notice"><b>Source rule:</b> Grounded on 7 Hindi one-shot/marathon videos (DBMS, Cache+Pipelining, TOC+Compiler, CN, OS, Stack/Queue, Graph-Tree-Heap) + channel's other IOCL videos (Digital Logic, C Programming, Linked List, Array/String). Their transcripts are Hindi auto-captions with no English track, so these are <b>fresh English practice questions on the same topics</b> — not copies/translations of the videos' questions. Each problem has its own <b>Show solution</b> button with full solving steps.</div>
+<div class="toolbar">
+<input type="search" id="s" placeholder="Search…" style="flex:1;min-width:160px">
+<select id="f"><option value="">All subjects</option></select>
+<button class="btn small" id="bAll">Show all solutions</button>
+<button class="btn small" id="bNone">Hide all solutions</button>
+<button class="btn green" id="bPrint">Print</button>
+</div>
+</div>
+<div id="list"></div>
+</div>
+<script>
+const Q=[
+// ===== DBMS (transcript: dbms-one-shot-transcript-hi.txt) =====
+{s:"DBMS",q:"R(A,B,C,D) with FDs A→B, B→C, C→D. What is the key and highest normal form?",o:["Key A; 1NF","Key A; 2NF","Key D; 2NF","Key AB; 3NF"],a:1,e:"ANSWER: Key A; 2NF",w:"Step 1: Closure of A = {A,B,C,D} (via chain), so A is the key.\nStep 2: Single-attribute key → no partial dependency → at least 2NF.\nStep 3: B→C and C→D are transitive (non-key determining non-key) → violates 3NF.\nHence 2NF."},
+{s:"DBMS",q:"Which schedule is conflict-serializable? S: r1(A) w2(A) r1(B) w2(B)",o:["Yes — equivalent to T1→T2","Yes — equivalent to T2→T1","No — cycle in precedence graph","Cannot decide"],a:0,e:"ANSWER: Yes — equivalent to T1→T2",w:"Conflict on A: r1(A) before w2(A) gives edge T1→T2.\nConflict on B: r1(B) before w2(B) gives edge T1→T2.\nBoth edges same direction → graph acyclic → serializable, order T1 then T2."},
+{s:"DBMS",q:"Second highest salary: employees(emp_id, salary). Correct query?",o:["SELECT MAX(salary) FROM employees WHERE salary < (SELECT MAX(salary) FROM employees)","SELECT salary FROM employees ORDER BY salary DESC LIMIT 1","SELECT MIN(salary) FROM employees","SELECT TOP 2 salary FROM employees"],a:0,e:"ANSWER: option A",w:"Inner query finds max salary M.\nOuter finds max among salaries < M = second highest.\nLIMIT 1 after DESC gives the highest, not second."},
+{s:"DBMS",q:"Strict 2PL guarantees:",o:["Recoverable + cascadeless schedules","Only serializability","Only deadlocks","Faster commits"],a:0,e:"ANSWER: Recoverable + cascadeless",w:"Strict 2PL holds all X locks till commit.\nNo dirty reads (no one reads uncommitted) → recoverable.\nNo cascading aborts → cascadeless. Serializability comes from 2PL itself."},
+{s:"DBMS",q:"In a B+ tree of order m, internal node (except root) has children between:",o:["ceil(m/2) and m","1 and m","m and 2m","2 and m-1"],a:0,e:"ANSWER: ceil(m/2)..m",w:"B+ tree fill rule: every non-root node at least half full.\nMin children = ceil(m/2), max = m. Root may have 2..m."},
+{s:"DBMS",q:"LEFT JOIN of A(3 rows) with B(2 matching rows): result row count is:",o:["Exactly 3","Exactly 2","At least 3","Exactly 5"],a:2,e:"ANSWER: At least 3",w:"Every left row appears ≥ once (NULLs if no match).\nMatching left rows can duplicate → total ≥ 3."},
+{s:"DBMS",q:"A view with GROUP BY is generally:",o:["Not updatable","Always updatable","Updatable with CHECK OPTION","A materialized table"],a:0,e:"ANSWER: Not updatable",w:"Aggregate views map one view-row to many base-rows.\nDBMS cannot propagate an update unambiguously → read-only."},
+{s:"DBMS",q:"FD set {AB→C, C→A}: which holds?",o:["Keys AB and BC; in 3NF not BCNF","Keys AB only; in BCNF","Keys AC only; in 2NF","No key exists"],a:0,e:"ANSWER: Keys AB, BC; 3NF not BCNF",w:"(AB)+ = ABCD? attrs A,B,C: (AB)+={A,B,C} yes key. (BC)+={B,C,A} key.\nC→A: C not superkey → BCNF violated. A prime → 3NF OK."},
+{s:"DBMS",q:"Undo needed after crash for transactions that were:",o:["Active (uncommitted)","Committed and flushed","Committed but unflushed","Read-only"],a:0,e:"ANSWER: Active",w:"Active = partial effects must be rolled back (UNDO).\nCommitted+unflushed → REDO. Committed+flushed → nothing."},
+{s:"DBMS",q:"CHECK constraint vs trigger: CHECK cannot:",o:["Reference other tables/queries","Restrict a column range","Enforce NOT NULL-like rules","Reject bad inserts"],a:0,e:"ANSWER: Reference other tables",w:"CHECK is row-local (single row, no subqueries in most DBMS).\nCross-table rules need triggers or assertions."},
+// ===== COA: Cache / Pipelining =====
+{s:"COA: Cache + Pipelining",q:"Cache 256 KB, block 32 B, direct-mapped, 32-bit address. Tag bits?",o:["14","13","19","18"],a:0,e:"ANSWER: 14",w:"Blocks = 256K/32 = 8192 = 2^13 → index 13 bits.\nOffset = log2(32) = 5 bits.\nTag = 32 − 13 − 5 = 14."},
+{s:"COA: Cache + Pipelining",q:"Hit ratio 0.95, Tc=10ns, Tm=100ns (hierarchical). Average access time?",o:["14.5 ns","15 ns","19.5 ns","10.5 ns"],a:0,e:"ANSWER: 14.5 ns",w:"Tavg = H·Tc + (1−H)·Tm = 0.95×10 + 0.05×100 = 9.5 + 5 = 14.5 ns."},
+{s:"COA: Cache + Pipelining",q:"4-way set associative cache with 64 sets. Index bits?",o:["6","4","8","2"],a:0,e:"ANSWER: 6",w:"Index selects the set: 64 sets = 2^6 → 6 bits. (Associativity affects tag, not index.)"},
+{s:"COA: Cache + Pipelining",q:"5-stage pipeline, 100 instructions, 1 ns cycle, no hazards. Total time?",o:["104 ns","100 ns","500 ns","105 ns"],a:0,e:"ANSWER: 104 ns",w:"Time = (k + n − 1) cycles = 5 + 100 − 1 = 104 cycles × 1 ns."},
+{s:"COA: Cache + Pipelining",q:"Each stage 2 ns, 4 stages, 1000 instructions. Speedup over non-pipelined?",o:["≈3.99","4.5","2.0","≈1.0"],a:0,e:"ANSWER: ≈3.99",w:"Non-pipe = 1000×8 = 8000 ns. Pipe = (4+999)×2 = 2006 ns.\nSpeedup = 8000/2006 ≈ 3.99 (≈ stages, slightly less)."},
+{s:"COA: Cache + Pipelining",q:"Which writes to main memory on every store?",o:["Write-through","Write-back","Write-around","Write-allocate"],a:0,e:"ANSWER: Write-through",w:"Write-through updates memory immediately (slower, simpler).\nWrite-back marks dirty, writes only on eviction."},
+{s:"COA: Cache + Pipelining",q:"Conflict misses are best reduced by:",o:["Higher associativity","Larger blocks only","Slower memory","Smaller cache"],a:0,e:"ANSWER: Higher associativity",w:"3 C's: compulsory (cold), capacity (size), conflict (mapping).\nAssociativity spreads colliding blocks across ways."},
+{s:"COA: Cache + Pipelining",q:"20% branches, 2-cycle mispredict penalty, base CPI 1. Effective CPI?",o:["1.4","1.2","2.0","1.02"],a:0,e:"ANSWER: 1.4",w:"CPI = 1 + fraction×penalty = 1 + 0.2×2 = 1.4."},
+{s:"COA: Cache + Pipelining",q:"Data hazard where instruction needs a result not yet written back is a:",o:["RAW hazard","WAR hazard","WAW hazard","Structural hazard"],a:0,e:"ANSWER: RAW",w:"Read-After-Write = true dependency. Fixed by forwarding/stalls.\nWAR/WAW are name dependencies."},
+{s:"COA: Cache + Pipelining",q:"Amdahl's law: 40% of program parallelized with 4× speedup on that part. Overall speedup?",o:["≈1.43","1.6","2.0","4.0"],a:0,e:"ANSWER: ≈1.43",w:"S = 1/((1−0.4) + 0.4/4) = 1/(0.6+0.1) = 1/0.7 ≈ 1.43."},
+// ===== TOC + Compiler =====
+{s:"TOC + Compiler",q:"Regex (0+1)*00(0+1)* denotes strings that:",o:["Contain 00 as substring","End with 00","Start with 00","Have even length"],a:0,e:"ANSWER: Contain 00",w:"(0+1)* allows anything before and after the fixed 00.\nSo 00 appears somewhere. Ending version would be (0+1)*00."},
+{s:"TOC + Compiler",q:"Pumping lemma is used to prove a language is:",o:["Not regular","Regular","Context-free","Decidable"],a:0,e:"ANSWER: Not regular",w:"Assume regular → pumping must hold → derive contradiction.\nIt proves non-regularity (one direction only)."},
+{s:"TOC + Compiler",q:"L = {a^n b^n | n≥1} is:",o:["CFL but not regular","Regular","Recursive but not CFL","Non-recursive"],a:0,e:"ANSWER: CFL, not regular",w:"Needs unbounded counting → not regular (pumping fails).\nA PDA pushes a's, pops b's → context-free."},
+{s:"TOC + Compiler",q:"Remove left recursion: A→Aα | β becomes:",o:["A→βA′, A′→αA′|ε","A→αA′|β","A→βα|ε","A→Aβ|α"],a:0,e:"ANSWER: A→βA′, A′→αA′|ε",w:"Standard transform: base β first, then loop α's via new non-terminal.\nEliminates infinite left descent in top-down parsers."},
+{s:"TOC + Compiler",q:"S→Ab, A→a|ε. FIRST(S) = ?",o:["{a, b}","{a}","{b}","{a, b, ε}"],a:0,e:"ANSWER: {a, b}",w:"A derives a or ε. If A→a: S starts a. If A→ε: S starts b.\nε itself ∉ FIRST(S) since S always yields ≥1 terminal."},
+{s:"TOC + Compiler",q:"LL(1) parsing requires grammar with:",o:["No left recursion, left-factored, disjoint FIRST/FOLLOW","Left recursion","Ambiguity","No terminals"],a:0,e:"ANSWER: No left recursion, factored, disjoint",w:"One lookahead must pick a unique production.\nLeft recursion/first-follow clashes break that."},
+{s:"TOC + Compiler",q:"Dangling-else ambiguity is typically resolved by:",o:["Shift over reduce (else binds nearest if)","Rejecting the program","Deleting the else","Always reducing"],a:0,e:"ANSWER: Shift over reduce",w:"YACC-style parsers shift the else, binding it to the nearest if.\nStandard disambiguation rule."},
+{s:"TOC + Compiler",q:"Minimal DFA for strings over {0,1} ending in 01 has how many states?",o:["3","2","4","1"],a:0,e:"ANSWER: 3",w:"Track longest suffix matched: none(0 seen nothing), got-0, got-01(accept).\n3 distinguishable situations → 3 states."},
+{s:"TOC + Compiler",q:"Which problem is decidable?",o:["Emptiness of a DFA","Emptiness of a Turing machine","Equivalence of CFGs","Universality of CFGs"],a:0,e:"ANSWER: Emptiness of DFA",w:"DFA emptiness = graph reachability from start to accept. Decidable.\nTM emptiness and CFG equivalence/universality are undecidable."},
+{s:"TOC + Compiler",q:"LALR(1) vs CLR(1):",o:["LALR merges states → smaller tables, may add reduce-reduce conflicts","LALR is strictly more powerful","CLR tables are smaller","They accept different language classes always"],a:0,e:"ANSWER: Merging, smaller tables, possible new conflicts",w:"LALR merges LR(0) cores with lookaheads unioned.\nSame power as SLR-ish in practice; merging can create reduce-reduce (never new shift-reduce) conflicts."},
+// ===== CN =====
+{s:"Computer Networks",q:"Usable hosts in a /26 subnet?",o:["62","64","60","30"],a:0,e:"ANSWER: 62",w:"/26 → 32−26 = 6 host bits → 64 addresses.\nMinus network + broadcast = 62 usable."},
+{s:"Computer Networks",q:"TCP 3-way handshake order:",o:["SYN, SYN-ACK, ACK","SYN, ACK, SYN-ACK","ACK, SYN, SYN-ACK","SYN-ACK, SYN, ACK"],a:0,e:"ANSWER: SYN, SYN-ACK, ACK",w:"Client SYN → server SYN-ACK → client ACK.\nSynchronizes sequence numbers both ways."},
+{s:"Computer Networks",q:"Distance-vector routing suffers from:",o:["Count-to-infinity","Single point HAL","VLAN leaks","Port scan"],a:0,e:"ANSWER: Count-to-infinity",w:"Bad news propagates slowly router-to-router, metric inflates.\nFixed by split horizon, poison reverse."},
+{s:"Computer Networks",q:"After a collision, Ethernet waits a random time using:",o:["Binary exponential backoff","Fixed 1 ms","Round robin","Token passing"],a:0,e:"ANSWER: Binary exponential backoff",w:"After k collisions wait random 0..2^k−1 slots.\nSpreads retries, standard CSMA/CD."},
+{s:"Computer Networks",q:"Stop-and-wait efficiency: 1000-bit frame, 1 Mbps, RTT 20 ms?",o:["≈4.8%","50%","95%","100%"],a:0,e:"ANSWER: ≈4.8%",w:"Tx = 1000/1e6 = 1 ms. U = Tx/(Tx+RTT) = 1/21 ≈ 4.8%.\nLong fat pipes kill stop-and-wait → use sliding window."},
+{s:"Computer Networks",q:"Default mask of Class B?",o:["255.255.0.0","255.0.0.0","255.255.255.0","255.255.255.255"],a:0,e:"ANSWER: 255.255.0.0",w:"Class B = /16: first two octets network."},
+{s:"Computer Networks",q:"With window size 4, Go-Back-N needs sequence numbers:",o:["5 (N+1)","4","8","16"],a:0,e:"ANSWER: 5",w:"GBN needs N+1 numbers to distinguish new vs retransmitted frames.\n(Selective Repeat needs 2N.)"},
+{s:"Computer Networks",q:"In slow start, cwnd grows:",o:["Doubling each RTT","By 1 MSS each RTT","It stays fixed","Halving each RTT"],a:0,e:"ANSWER: Doubling each RTT",w:"Exponential: 1,2,4,8… per RTT until ssthresh/loss.\nThen congestion avoidance (linear)."},
+{s:"Computer Networks",q:"DNS primarily uses port:",o:["53","80","443","25"],a:0,e:"ANSWER: 53",w:"53 = DNS (UDP, TCP for zone transfers). 80 HTTP, 443 HTTPS, 25 SMTP."},
+{s:"Computer Networks",q:"TLS operates:",o:["Above TCP (between transport and app)","At the data-link layer","Inside IP headers","At physical layer"],a:0,e:"ANSWER: Above TCP",w:"TLS handshakes over reliable TCP, then encrypts app data.\nHTTPS = HTTP over TLS over TCP."},
+// ===== OS =====
+{s:"Operating Systems",q:"Bursts P1=6, P2=8, P3=7 (all arrive 0). SJF average waiting time?",o:["(0+6+13)/3 = 6.33","7","8","(6+8+7)/3 = 7"],a:0,e:"ANSWER: 6.33",w:"Order P1(6), P3(7), P2(8). Waits: 0, 6, 13.\nAvg = 19/3 ≈ 6.33."},
+{s:"Operating Systems",q:"Single-instance resources: RAG cycle means:",o:["Deadlock certain","No deadlock","Starvation only","Safe state"],a:0,e:"ANSWER: Deadlock certain",w:"With one instance per type, cycle ⟺ deadlock.\n(Multi-instance needs Banker's-style check.)"},
+{s:"Operating Systems",q:"Belady's anomaly occurs in:",o:["FIFO","LRU","Optimal","LFU"],a:0,e:"ANSWER: FIFO",w:"FIFO can fault MORE with more frames (classic 1,2,3,4,1,2,5… example).\nStack algorithms (LRU, Optimal) are immune."},
+{s:"Operating Systems",q:"Working-set model combats:",o:["Thrashing","Deadlock","Starvation","Fragmentation"],a:0,e:"ANSWER: Thrashing",w:"Keeps each process's locality in RAM; if total demand > frames, suspend a process.\nPrevents paging-storm collapse."},
+{s:"Operating Systems",q:"fork() returns to the child:",o:["0","Child PID","Parent PID","−1 always"],a:0,e:"ANSWER: 0",w:"Child gets 0, parent gets child PID, −1 on failure.\nStandard fork triad."},
+{s:"Operating Systems",q:"32-bit address, 4 KB pages. Offset bits and page count?",o:["12 bits, 2^20 pages","10 bits, 2^22 pages","4 bits, 2^28 pages","20 bits, 2^12 pages"],a:0,e:"ANSWER: 12 bits, 2^20 pages",w:"4 KB = 2^12 → 12 offset bits.\nPage-number bits = 32 − 12 = 20 → 2^20 pages."},
+{s:"Operating Systems",q:"Disk requests 50, current head 40, queue {45, 80, 10}. SSTF order:",o:["45, 80, 10","10, 45, 80","45, 10, 80","80, 45, 10"],a:0,e:"ANSWER: 45, 80, 10",w:"Nearest first: |45−40|=5 → 45. Then |80−45|=35 vs |10−45|=35 tie… from 45: 80 (35) then 10. (Tie-break commonly upward.) → 45,80,10."},
+{s:"Operating Systems",q:"Zombie process is one that:",o:["Terminated but parent hasn't wait()ed","Runs forever","Consumes 100% CPU","Holds a lock"],a:0,e:"ANSWER: Terminated, awaiting wait()",w:"Dead but PCB kept for exit status until parent reaps it.\nOrphans get adopted by init instead."},
+{s:"Operating Systems",q:"Counting semaphore initialized to 5 allows:",o:["Up to 5 concurrent holders","Only 1 holder","Unlimited holders","No holders"],a:0,e:"ANSWER: Up to 5 holders",w:"Value = available units. wait() decrements, blocks at <0.\nMutex is the special case init 1."},
+{s:"Operating Systems",q:"External fragmentation is best handled by:",o:["Compaction/paging","Larger partitions","More RAM only","Faster CPU"],a:0,e:"ANSWER: Compaction/paging",w:"Scattered free holes merge via compaction; paging removes it entirely\n(at the cost of internal fragmentation)."},
+// ===== Stack & Queue =====
+{s:"DSA: Stack & Queue",q:"Push 1,2,3 (stack). Which pop sequence is IMPOSSIBLE?",o:["3,1,2","2,1,3","1,2,3","2,3,1"],a:0,e:"ANSWER: 3,1,2",w:"3,1,2 needs 1 before 2 while 3 out first — but 1 is under 2.\nAfter popping 3, top is 2, so 1 can't precede 2."},
+{s:"DSA: Stack & Queue",q:"Infix a+b*c converts to postfix:",o:["abc*+","ab+c*","a+bc*","*+abc"],a:0,e:"ANSWER: abc*+",w:"* binds tighter: output a, then b c * , then +. → abc*+."},
+{s:"DSA: Stack & Queue",q:"Postfix 5 3 2 * + evaluates to:",o:["11","13","10","16"],a:0,e:"ANSWER: 11",w:"3×2=6 (stack: 5,6), then 5+6=11."},
+{s:"DSA: Stack & Queue",q:"Queue using 2 stacks: enqueue O(1); dequeue is:",o:["Amortized O(1)","Always O(n)","O(log n)","O(n²)"],a:0,e:"ANSWER: Amortized O(1)",w:"Each element moves between stacks at most twice.\nTotal O(n) for n ops → O(1) amortized."},
+{s:"DSA: Stack & Queue",q:"Circular queue (size n) is FULL when:",o:["(rear+1)%n == front","rear == front","rear == n−1","front == 0"],a:0,e:"ANSWER: (rear+1)%n == front",w:"One slot kept empty to distinguish full from empty (rear==front).\nEmpty: front==rear."},
+{s:"DSA: Stack & Queue",q:"Balanced-parentheses checking uses:",o:["Stack","Queue","Heap","Graph"],a:0,e:"ANSWER: Stack",w:"Push opens, pop-match on closes. Leftover/mismatch = unbalanced.\nLIFO mirrors nesting."},
+{s:"DSA: Stack & Queue",q:"naive recursive factorial(n) stack depth:",o:["O(n)","O(1)","O(log n)","O(n²)"],a:0,e:"ANSWER: O(n)",w:"One frame per call n→0, all live simultaneously → depth n."},
+{s:"DSA: Stack & Queue",q:"Minimum stack size to convert infix with max nesting depth d:",o:["O(d)","O(n²)","O(1)","O(n!)"],a:0,e:"ANSWER: O(d)",w:"Operators/operands on stack bounded by nesting depth, not length."},
+// ===== Graph / Tree / Heap =====
+{s:"DSA: Graph-Tree-Heap",q:"Height of complete binary tree with 100 nodes?",o:["6","7","5","100"],a:0,e:"ANSWER: 6",w:"Height (edges, root 0) = floor(log2(100)) = 6 (64≤100<128).\n(Counting levels: 7.)"},
+{s:"DSA: Graph-Tree-Heap",q:"Inorder traversal of a BST yields nodes in:",o:["Sorted order","Reverse order","Random order","Level order"],a:0,e:"ANSWER: Sorted order",w:"Inorder = left, root, right; BST property makes it ascending.\nClassic MCQ."},
+{s:"DSA: Graph-Tree-Heap",q:"Max edges in a directed acyclic graph with n nodes?",o:["n(n−1)/2","n(n−1)","n−1","n²"],a:0,e:"ANSWER: n(n−1)/2",w:"All ordered pairs one direction only (topological order i<j).\nUndirected complete = same count; directed complete = n(n−1)."},
+{s:"DSA: Graph-Tree-Heap",q:"Dijkstra fails when the graph has:",o:["Negative edge weights","Unweighted edges","Cycles","Disconnected nodes"],a:0,e:"ANSWER: Negative weights",w:"Greedy finalization assumes non-negative edges.\nUse Bellman-Ford with negatives."},
+{s:"DSA: Graph-Tree-Heap",q:"Kruskal's algorithm first step:",o:["Sort all edges by weight","Start from node 0","Build adjacency matrix","Color the graph"],a:0,e:"ANSWER: Sort edges",w:"Sort ascending, then union-find adds edges skipping cycles.\nO(E log E)."},
+{s:"DSA: Graph-Tree-Heap",q:"BFS from source in unweighted graph gives:",o:["Shortest paths","MST","Topological order","SCCs"],a:0,e:"ANSWER: Shortest paths",w:"Level order = increasing distance. First visit = shortest.\nWeighted needs Dijkstra."},
+{s:"DSA: Graph-Tree-Heap",q:"Max-heap [10,8,5], insert 12. New root?",o:["12","10","8","5"],a:0,e:"ANSWER: 12",w:"12 appended then bubbles past 8 and 10 to root.\nHeap property restored upward."},
+{s:"DSA: Graph-Tree-Heap",q:"Tree with n nodes has exactly:",o:["n−1 edges","n edges","n+1 edges","2n edges"],a:0,e:"ANSWER: n−1",w:"Connected + acyclic ⟺ n nodes, n−1 edges.\nOne extra edge creates exactly one cycle."},
+// ===== BONUS: Digital Logic + C + Linked List + Array/String =====
+{s:"Bonus: DL + C + LL",q:"2's complement of 8-bit 00010110?",o:["11101010","11101001","00010111","10010110"],a:0,e:"ANSWER: 11101010",w:"Invert → 11101001, add 1 → 11101010.\nCheck: 22 + (−22) = 0 mod 256."},
+{s:"Bonus: DL + C + LL",q:"K-map grouping 8 adjacent 1s in 4 variables eliminates:",o:["3 literals","1 literal","2 literals","0 literals"],a:0,e:"ANSWER: 3 literals",w:"Group of 2^k removes k literals. 8 = 2^3 → 4−3 = 1 literal left.\nSo 3 eliminated."},
+{s:"Bonus: DL + C + LL",q:"Output: int a=5; printf(\"%d\", a++ + ++a); ?",o:["Undefined behavior (sequence-point violation)","12","11","13"],a:0,e:"ANSWER: Undefined",w:"a modified twice between sequence points → compiler-dependent.\nNever write such code; never asked fairly — answer: UB."},
+{s:"Bonus: DL + C + LL",q:"static int x inside a function:",o:["Persists across calls, initialized once","Fresh each call","Global scope","Stored on heap"],a:0,e:"ANSWER: Persists, init once",w:"Lifetime = program, scope = function, zero-initialized.\nCounts calls famously."},
+{s:"Bonus: DL + C + LL",q:"Middle of singly linked list in one pass:",o:["Slow/fast pointers","Reverse twice","Hash all nodes","Count then sort"],a:0,e:"ANSWER: Slow/fast",w:"Fast moves 2×; when fast ends, slow is mid.\nO(n) time, O(1) space."},
+{s:"Bonus: DL + C + LL",q:"Floyd cycle detection uses:",o:["Two pointers at 1× and 2× speed","Sorting nodes","Extra hash table","Deleting nodes"],a:0,e:"ANSWER: 1× and 2× pointers",w:"If they meet → cycle. Meeting math also finds cycle start.\nO(1) space."},
+{s:"Bonus: DL + C + LL",q:"Reversing a singly linked list iteratively is:",o:["O(n) time, O(1) space","O(n²) time","O(n) space","O(log n)"],a:0,e:"ANSWER: O(n), O(1)",w:"One pass rewiring next pointers with 3 variables.\nprev/curr/next pattern."},
+{s:"Bonus: DL + C + LL",q:"Best-case time to search an unsorted array of n?",o:["O(1)","O(n)","O(log n)","O(n log n)"],a:0,e:"ANSWER: O(1)",w:"Target at first position → 1 comparison. Worst O(n).\nSorted + binary search = O(log n)."}
+];
+let openSet=new Set();
+function render(){
+ const f=document.getElementById('f').value, s=document.getElementById('s').value.toLowerCase();
+ let n=0;const subs=[...new Set(Q.map(q=>q.s))];
+ const sel=document.getElementById('f');
+ if(sel.options.length<=1)subs.forEach(t=>{const o=document.createElement('option');o.textContent=t;sel.appendChild(o);});
+ let html='';
+ subs.filter(t=>!f||t===f).forEach(t=>{
+  const rows=Q.map((q,i)=>({...q,i})).filter(q=>q.s===t&&(!s||(q.q+q.t).toLowerCase().includes(s)));
+  if(!rows.length)return;
+  html+=`<h2 class="sec">${t} (${rows.length})</h2>`;
+  rows.forEach(q=>{n++;html+=`<div class="q"><div class="meta">${q.s} · Q${q.i+1} · Practice — concept from listed videos, not a video question</div><div class="qt">Q${q.i+1}. ${q.q}</div><div class="opts">${q.o.map((o,j)=>`${String.fromCharCode(65+j)}. ${o}`).join('<br>')}</div><button class="btn small" onclick="toggle(${q.i})" id="btn${q.i}">${openSet.has(q.i)?'Hide solution':'Show solution'}</button><div class="sol ${openSet.has(q.i)?'open':''}" id="sol${q.i}"><b>${q.e}</b><div class="steps">${q.w}</div></div></div>`;});
+ });
+ document.getElementById('list').innerHTML=html||'<div class="card">No match.</div>';
+ document.getElementById('count').textContent=`Showing ${n} of ${Q.length} practice questions across ${subs.filter(t=>!f||t===f).length} subject(s)`;
+}
+function toggle(i){openSet.has(i)?openSet.delete(i):openSet.add(i);document.getElementById('sol'+i).classList.toggle('open');document.getElementById('btn'+i).textContent=openSet.has(i)?'Hide solution':'Show solution';}
+document.getElementById('s').addEventListener('input',render);
+document.getElementById('f').addEventListener('change',render);
+document.getElementById('bAll').addEventListener('click',()=>{Q.forEach((_,i)=>openSet.add(i));render();});
+document.getElementById('bNone').addEventListener('click',()=>{openSet.clear();render();});
+document.getElementById('bPrint').addEventListener('click',()=>window.print());
+render();
+</script>
+</body>
+</html>
